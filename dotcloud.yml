@@ -1,0 +1,30 @@
+sentry:
+    type: python-worker
+    ports:
+        # You can submit errors either by using the HTTP API or the UDP API.
+        # The HTTP api also contains a web interface.
+        sentryweb: http
+        sentryudp: udp
+    environment:
+        # Without a trailing /
+        SENTRY_URL_PREFIX: 'https://sentry.example.com'
+        # You can generate a new key with base64.b64encode(os.urandom(40)):
+        SENTRY_KEY: 'base64.b64encode(os.urandom(40))'
+        # This will be used to send internal sentry errors:
+        SENTRY_ADMIN: 'user@example.com'
+        # The following super user for the web interface will be created on the
+        # first push:
+        SENTRY_WEB_ADMIN: 'admin'
+        SENTRY_WEB_ADMIN_PASSWORD: 'pwgen -sy 16 1'
+    processes:
+        sentryweb: sentry --config=$HOME/current/sentry_conf.py start
+        sentryudp: sentry --config=$HOME/current/sentry_conf.py start udp
+        workers: sentry --config=$HOME/current/sentry_conf.py celeryd
+
+# The redis service is used by sentry to process events asynchronously. It
+# serves both as a buffer to store incoming events and as a broker for Celery.
+buffers:
+    type: redis
+
+db:
+    type: mysql

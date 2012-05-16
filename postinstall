@@ -1,0 +1,13 @@
+#!/bin/sh
+
+dotcloud_get_env() {
+    sed -n "/$1/ s/.*: \"\(.*\)\".*/\1/p" < "$HOME/environment.json"
+}
+
+python ~/current/createdb.py
+sentry --config=$HOME/current/sentry_conf.py upgrade --noinput
+
+# Setup the Django/Sentry/Logan glue before we call mkadmin.py
+export DJANGO_SETTINGS_MODULE=sentry.conf.server
+export DATABASE_URL=`dotcloud_get_env DOTCLOUD_DB_MYSQL_URL`/sentry
+python ~/current/mkadmin.py
