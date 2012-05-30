@@ -1,4 +1,4 @@
-sentry>=4.3,<4.4
+sentry>=4.5,<4.6
 mysql-python>=1.2,<1.3
 # For gevent support with sentry:
 gevent>=0.13,<0.14
