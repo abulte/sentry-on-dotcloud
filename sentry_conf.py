@@ -1,6 +1,7 @@
 
 import os.path
 import json
+import re
 
 with open(os.path.expanduser('~/environment.json'), 'r') as env_file:
     dotcloud_env = json.load(env_file)
@@ -87,6 +88,7 @@ SENTRY_BUFFER_OPTIONS = {
 # this service just to do a redirect.
 #
 # XXX: I guess this will break POSTs to the Sentry API using HTTP.
-EXTRA_MIDDLEWARE_CLASSES = (
-    'sslify.middleware.SSLifyMiddleware',
-)
+if not re.match(r'[tT]rue', dotcloud_env.get('DISABLE_SSL', 'false')):
+    EXTRA_MIDDLEWARE_CLASSES = (
+        'sslify.middleware.SSLifyMiddleware',
+    )
