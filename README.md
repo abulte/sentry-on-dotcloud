@@ -14,6 +14,8 @@ Edit the configuration in `dotcloud.yml`:
 * SENTRY_URL_PREFIX : URL of sentry when deployed (should be `sentry-<dotcloud_username>.dotcloud.com`)
 * SENTRY_WEB_ADMIN : admin username in sentry
 * SENTRY_WEB_ADMIN_PASSWORD : admin password in sentry
+* SENTRY_KEY : a unique key
+* SENTRY_ADMIN : your email for internal errors notifications
 
 Get started with Dotcloud <http://docs.dotcloud.com/firststeps/install/>
 
